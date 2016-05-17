@@ -1,0 +1,10 @@
+name = Manage Life Core
+description = Core module for entire site
+core = 7.x
+
+; Core
+dependencies[] = views
+dependencies[] = features
+dependencies[] = bean
+dependencies[] = admin_menu
+dependencies[] = module_filter

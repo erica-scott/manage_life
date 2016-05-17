@@ -1,0 +1,16 @@
+<?php
+/**
+ * @file
+ * Install file for manage_life_core module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function manage_life_core_install() {
+  $en_module_list = array('views', 'features', 'bean', 'admin_menu', 'module_filter');
+  $dis_module_list = array('toolbar', 'overlay');
+
+  module_enable($en_module_list);
+  module_disable($dis_module_list);
+}
