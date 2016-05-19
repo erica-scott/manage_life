@@ -13,4 +13,19 @@ function manage_life_core_install() {
 
   module_enable($en_module_list);
   module_disable($dis_module_list);
+  theme_enable('manage_life_theme');
+  variable_set('theme_default', 'manage_life_theme');
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function manage_life_core_update_7000() {
+  $en_module_list = array('views', 'features', 'bean', 'admin_menu', 'module_filter');
+  $dis_module_list = array('toolbar', 'overlay');
+
+  module_enable($en_module_list);
+  module_disable($dis_module_list);
+  theme_enable('manage_life_theme');
+  variable_set('theme_default', 'manage_life_theme');
 }
