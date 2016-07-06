@@ -266,3 +266,14 @@ function manage_install() {
   module_load_include('drush.inc', 'pool_core');
   drush_pool_core_reset_permissions();
 }
+
+/**
+ * Implements hook_update_N().
+ */
+function manage_update_7001() {
+  $en_module_list = array('views', 'features', 'ctools', 'bean', 'admin_menu', 'module_filter');
+  $dis_module_list = array('toolbar', 'overlay');
+
+  module_enable($en_module_list);
+  module_disable($dis_module_list);
+}

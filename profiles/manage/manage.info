@@ -4,4 +4,9 @@ version = VERSION
 core = 7.x
 
 ; Core
-dependencies[] = manage_core
+dependencies[] = views
+dependencies[] = features
+dependencies[] = ctools
+dependencies[] = bean
+dependencies[] = admin_menu
+dependencies[] = module_filter
