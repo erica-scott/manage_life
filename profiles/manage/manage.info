@@ -1,0 +1,7 @@
+name = Manage
+description = Install with Manage features installed and configured.
+version = VERSION
+core = 7.x
+
+; Core
+dependencies[] = manage_core
