@@ -7,7 +7,7 @@
 /**
  * Implements hook_preprocess_html().
  */
-function fly_flower_preprocess_html(&$var) {
+function manage_preprocess_html(&$var) {
   // Add Google's fonts.
   drupal_add_css('http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700', array('type' => 'external'));
   drupal_add_css('http://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700', array('type' => 'external'));
@@ -16,7 +16,7 @@ function fly_flower_preprocess_html(&$var) {
 /**
  * Implements hook_preprocess_comment().
  */
-function fly_flower_preprocess_comment(&$variables) {
+function manage_preprocess_comment(&$variables) {
   // Zebra classes are added in the default template_preprocess function.
   if (!empty($variables['zebra'])) {
     $variables['classes_array'][] = $variables['zebra'];
@@ -26,14 +26,14 @@ function fly_flower_preprocess_comment(&$variables) {
 /**
  * Implements hook_menu_tree().
  */
-function fly_flower_menu_tree(array $variables) {
+function manage_menu_tree(array $variables) {
   return '<ul class="menu nav navbar-nav">' . $variables['tree'] . '</ul>';
 }
 
 /**
  * Implements hook_menu_link().
  */
-function fly_flower_menu_link(array $variables) {
+function manage_menu_link(array $variables) {
   global $language_url;
   $element = $variables['element'];
   $sub_menu = '';
@@ -78,4 +78,35 @@ function fly_flower_menu_link(array $variables) {
   }
   $output = l($element['#title'], $element['#href'], $element['#localized_options']);
   return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
+}
+
+/**
+ * Implements hook_preprocess_page.
+ */
+function manage_preprocess_page(&$vars) {
+  $menu = menu_tree('main-menu');
+  $menuhtml = drupal_render($menu);
+  $vars['main_menu'] = $menuhtml;
+}
+
+/**
+ *
+ */
+function manage_preprocess_views_view(&$view) {
+  if ($view['view']->name == 'money') {
+    $res = db_select('node', 'n')
+      ->fields('n')
+      ->condition('type', 'totals')
+      ->execute()
+      ->fetchAll();
+
+    foreach ($res as $node) {
+      $temp = new stdClass();
+      $temp->nid = $node->nid;
+      $temp->node_title = 'Total';
+      $temp->field_data_field_amount_field_amount_value = 0;
+      $view['view']->result[] = $temp;
+    }
+    dpm($view);
+  }
 }

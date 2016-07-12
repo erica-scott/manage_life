@@ -1,0 +1,81 @@
+<?php
+/**
+ * @file
+ * Code for the Money feature.
+ */
+
+include_once 'manage_money.features.inc';
+
+/**
+ * Implements hook_node_presave.
+ */
+function manage_money_node_presave($node) {
+  if ($node->type == 'money') {
+    if ($node->field_monthly['und'][0]['value'] == 1) {
+      $start_date = $node->field_date['und'][0]['value'];
+      $end_date = $node->field_end_date['und'][0]['value'];
+
+      $temp_date = $start_date;
+      if (strtotime($temp_date) < strtotime($end_date)) {
+        $temp_date = strtotime($temp_date);
+        $temp_date = date('Y-m-d h:i:s', strtotime("+1 month", $temp_date));
+
+        $new_node = new stdClass();
+        $new_node->title = $node->title;
+        $new_node->type = $node->type;
+        $new_node->status = 1;
+        $new_node->uid = (isset($local_user->uid) && !empty($local_user->uid)?$local_user->uid:1);
+        $new_node->language = 'und';
+
+        $new_node->field_amount = $node->field_amount;
+        $new_node->field_date = $node->field_date;
+        $new_node->field_monthly = $node->field_monthly;
+        $new_node->field_end_date = $node->field_end_date;
+        $new_node->field_date['und'][0]['value'] = $temp_date;
+
+        $new_node = node_submit($new_node);
+        node_save($new_node);
+      }
+    }
+
+    $nodes = node_load_multiple(array(), array('type' => 'money'));
+    foreach ($nodes as $node) {
+      $month = date('F Y', strtotime($node->field_date['und'][0]['value']));
+      if (isset($totals[$month])) {
+        $totals[$month] += $node->field_amount['und'][0]['amount'];
+      }
+      else {
+        $totals[$month] = $node->field_amount['und'][0]['amount'];
+      }
+    }
+
+    foreach ($totals as $date => $total) {
+      $res = db_select('node', 'n')
+        ->fields('n')
+        ->condition('type', 'totals')
+        ->condition('title', $date)
+        ->execute()
+        ->fetchAll();
+
+      if (count($res) < 1) {
+        $node = new stdClass();
+        $node->title = $date;
+        $node->type = 'totals';
+        $node->status = 1;
+        $node->uid = (isset($local_user->uid) && !empty($local_user->uid)?$local_user->uid:1);
+        $node->language = 'und';
+
+        $node->field_amount['und'][0]['amount'] = $total;
+        $node->field_amount['und'][0]['currency'] = 'CAD';
+
+        $node = node_submit($node);
+        node_save($node);
+      }
+      else {
+        $node = node_load($res[0]->nid);
+        $node->field_amount['und'][0]['amount'] = $total;
+        node_save($node);
+      }
+    }
+  }
+}

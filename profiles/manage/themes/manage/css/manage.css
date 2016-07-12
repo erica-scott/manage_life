@@ -14,3 +14,41 @@ header .site-name :hover {
   text-decoration: none;
   color: #ff8533;
 }
+
+/* line 19, ../sass/components/_front.scss */
+.main .wrap-inner {
+  width: 100%;
+  max-width: none !important;
+}
+/* line 25, ../sass/components/_front.scss */
+.main .wrap-inner .main-menu li a {
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 30px;
+}
+/* line 31, ../sass/components/_front.scss */
+.main .wrap-inner .main-menu li a :hover {
+  text-decoration: none;
+}
+
+/* line 3, ../sass/components/_money.scss */
+.view-money .views-field-field-amount .negative {
+  color: red;
+}
+/* line 9, ../sass/components/_money.scss */
+.view-money caption .date-display-single {
+  font-size: 25px;
+}
+/* line 15, ../sass/components/_money.scss */
+.view-money table td.views-field views-field-title {
+  width: 50%;
+}
+/* line 19, ../sass/components/_money.scss */
+.view-money table td.views-field-field-date-1 {
+  width: 25%;
+}
+/* line 23, ../sass/components/_money.scss */
+.view-money table td.views-field-field-amount {
+  width: 325;
+}

@@ -94,5 +94,17 @@
     </div>
   </div>
 </header>
-<?php print $messages; ?>
+<div class="messages"><?php print $messages; ?></div>
+<section class="wrap main">
+  <div class="container wrap-inner">
 
+    <div class="main-menu">
+      <?php print_r($main_menu); ?>
+    </div>
+
+    <div class="front-content">
+
+    </div>
+
+  </div>
+</section>

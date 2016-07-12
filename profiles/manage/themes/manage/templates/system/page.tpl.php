@@ -83,7 +83,7 @@
             <li><a href="<?php print theme_get_setting('twitter'); ?>" class="twitter">Twitter</a></li>
             <li><a href="<?php print theme_get_setting('pinterest'); ?>" class="pinterest">Pinterest</a></li>
           </ul>
-        </div>        
+        </div>
       </div>
       <div class="col-md-4">
       	<div class="site-logo">
@@ -94,37 +94,25 @@
           <?php endif; ?>
           <?php if (!empty($site_slogan)): ?>
           	<h3 class="slogan"><?php print $site_slogan; ?></h3>
-          <?php endif; ?>	        
-        </div>        
+          <?php endif; ?>
+        </div>
       </div>
       <div class="col-md-4">
       	<div class="search-form">
         	<?php print render($page['search_form']); ?>
         </div><!--	/.search-form	!-->
       </div>
-    </div>    
+    </div>
 	</div>
 </header><!--	/.header	!-->
 
 <section class="wrap main">
-	<div class="container wrap-inner">
-    <nav class="wrap header-menu navbar navbar-default">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-menu">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <div class="collapse navbar-collapse" id="header-menu">
-      	<?php if (!empty($page['header_menu'])): ?>
-					<?php print render($page['header_menu']); ?>
-        <?php endif; ?>
-      </div>
-    </nav><!--	/.header-menu	!-->
-    
+  <div class="container wrap-inner">
+
+    <div class="main-menu">
+      <?php print_r($main_menu); ?>
+    </div>
+
     <div class="row main-inner">
     	<div class="main-table">
       	<div class="main-row">
@@ -146,7 +134,7 @@
               <?php endif; ?>
               <?php if (!empty($action_links)): ?>
                 <ul class="action-links"><?php print render($action_links); ?></ul>
-              <?php endif; ?>              
+              <?php endif; ?>
               <div class="region region-content">
                 <?php print render($page['content']); ?>
               </div>
@@ -158,7 +146,7 @@
       	</div>
       </div>
       <div class="clr"></div>
-      
+
       <div class="before-footer">
         <div class="col-md-3 bf-column1">
           <div class="region region-footer">
@@ -180,8 +168,8 @@
             <?php print render($page['before_footer4']); ?>
           </div>
         </div>
-      </div><!--	/.before-footer	!-->      
-          
+      </div><!--	/.before-footer	!-->
+
       <footer class="footer">
         <div class="col-md-6 copyright">
 					<?php print theme_get_setting('copyright'); ?>
@@ -194,7 +182,7 @@
           <?php print render($page['footer_menu']); ?>
         </div>
       </footer>
-      
+
     </div><!--	/.main-inner	!-->
   </div>
 </section>
