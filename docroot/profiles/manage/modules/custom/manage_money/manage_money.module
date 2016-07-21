@@ -1,0 +1,81 @@
+<?php
+/**
+ * @file
+ * Code for the Money feature.
+ */
+
+include_once 'manage_money.features.inc';
+
+/**
+ * Implements hook_node_presave.
+ */
+function manage_money_node_presave($node) {
+  if ($node->type == 'money') {
+    $current_total = variable_get('current_total', 0);
+    $money_nodes = node_load_multiple(array(), array('type' => 'money'));
+    foreach ($money_nodes as $money_node) {
+      if (strtotime($money_node->field_date['und'][0]['value']) < strtotime($node->field_date['und'][0]['value'])) {
+        $current_total += $money_node->field_amount['und'][0]['amount'];
+      }
+    }
+
+    $current_total += $node->field_amount['und'][0]['amount'];
+    $current_total = number_format($current_total, 2, '.', '');
+
+    if ($node->field_monthly['und'][0]['value'] == 1 && $node->is_new == TRUE) {
+      $start_date = $node->field_date['und'][0]['value'];
+      $end_date = $node->field_end_date['und'][0]['value'];
+
+      $temp_date = $start_date;
+      if (strtotime($temp_date) < strtotime($end_date)) {
+        $temp_date = strtotime($temp_date);
+        $temp_date = date('Y-m-d h:i:s', strtotime("+1 month", $temp_date));
+
+        $new_node = new stdClass();
+        $new_node->title = $node->title;
+        $new_node->type = $node->type;
+        $new_node->status = 1;
+        $new_node->uid = (isset($local_user->uid) && !empty($local_user->uid)?$local_user->uid:1);
+        $new_node->language = 'und';
+
+        $new_node->field_amount = $node->field_amount;
+        $new_node->field_date = $node->field_date;
+        $new_node->field_monthly = $node->field_monthly;
+        $new_node->field_end_date = $node->field_end_date;
+        $new_node->field_date['und'][0]['value'] = $temp_date;
+
+        $new_node = node_submit($new_node);
+        node_save($new_node);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function manage_money_menu() {
+  $items['admin/config/manage/money'] = array(
+    'title' => 'Money Config',
+    'description' => 'Manage the configurations of the money module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('manage_money_admin_form'),
+    'access arguments' => array('access administration pages'),
+  );
+
+  return $items;
+}
+
+/**
+ * Custom manage money admin form.
+ */
+function manage_money_admin_form($form, &$form_state) {
+  $form = array();
+
+  $form['test'] = array(
+    '#type' => 'markup',
+    '#markup' => 'Test',
+  );
+
+  return $form;
+}

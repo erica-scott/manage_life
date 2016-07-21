@@ -1,0 +1,13 @@
+<?php
+/**
+ * @file
+ * Insrall file for manage_money module.
+ */
+
+/**
+ * Implements hook_update_N().
+ */
+function manage_money_update_7000() {
+  features_revert_module('manage_money');
+  variable_set('current_total', 0);
+}

@@ -1,0 +1,31 @@
+.view-money {
+  .views-field {
+    .negative {
+      color: red;
+    }
+  }
+
+  caption {
+    .date-display-single {
+      font-size: 25px;
+    }
+  }
+
+  table {
+    td.views-field views-field-title {
+      width: 25%;
+    }
+
+    td.views-field-field-date-1 {
+      width: 25%;
+    }
+
+    td.views-field-field-amount {
+      width: 25%;
+    }
+
+    td.view-field-php {
+      width: 25%;
+    }
+  }
+}
