@@ -13,7 +13,12 @@ function manage_money_field_default_field_instances() {
   // Exported field_instance: 'node-money-field_amount'.
   $field_instances['node-money-field_amount'] = array(
     'bundle' => 'money',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'amount' => '0.00',
+        'currency' => 'CAD',
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(

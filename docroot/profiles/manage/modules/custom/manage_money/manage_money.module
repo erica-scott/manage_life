@@ -29,7 +29,8 @@ function manage_money_node_presave($node) {
       $temp_date = $start_date;
       if (strtotime($temp_date) < strtotime($end_date)) {
         $temp_date = strtotime($temp_date);
-        $temp_date = date('Y-m-d h:i:s', strtotime("+1 month", $temp_date));
+        $days_in_next_month = date('t', strtotime("+28 days", $temp_date));
+        $temp_date = date('Y-m-d h:i:s', strtotime("+$days_in_next_month days", $temp_date));
 
         $new_node = new stdClass();
         $new_node->title = $node->title;
@@ -55,6 +56,8 @@ function manage_money_node_presave($node) {
  * Implements hook_menu().
  */
 function manage_money_menu() {
+  module_load_include('inc', 'system', 'system.admin');
+
   $items['admin/config/manage/money'] = array(
     'title' => 'Money Config',
     'description' => 'Manage the configurations of the money module',
@@ -70,12 +73,72 @@ function manage_money_menu() {
  * Custom manage money admin form.
  */
 function manage_money_admin_form($form, &$form_state) {
-  $form = array();
+  if ( isset( $form_state['storage'] ) && $form_state['storage']['ask_confirm'] ) {
+    $question = t( "Confirm Generate" );
+    $path = 'admin/config/manage/money';
+    $description = t( "Are you sure you want to do this? This will set all money content up until today to unpublished and update your current total by adding up the amounts from all of this content. This cannot be undone." );
+    $yes = t( "Confirm" );
+    $no = t( "Cancel" );
+    return confirm_form($form, $question, $path, $description, $yes, $no);
+  }
+  else {
+    $form = array();
 
-  $form['test'] = array(
-    '#type' => 'markup',
-    '#markup' => 'Test',
-  );
+    $current_total = variable_get('current_total');
 
-  return $form;
+    $form['current_total'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Current Total',
+      '#default_value' => $current_total,
+    );
+
+    $form['save'] = array(
+      '#type' => 'submit',
+      '#value' => 'Save',
+    );
+
+    $form['generate'] = array(
+      '#type' => 'submit',
+      '#value' => 'Generate',
+    );
+
+    return $form;
+  }
+}
+
+/**
+ * Submit function for manage_money_admin_form save.
+ */
+function manage_money_admin_form_submit($form, &$form_state) {
+  if ($form_state['clicked_button']['#value'] == 'Save') {
+    $current_total = $form_state['values']['current_total'];
+    variable_set('current_total', $current_total);
+    drupal_set_message('You current total has been saved!');
+  }
+  else if ($form_state['clicked_button']['#value'] == 'Generate') {
+    $form_state['rebuild'] = TRUE;
+    $form_state['storage']['ask_confirm'] = TRUE;
+  }
+  else if (isset( $form_state['values']['confirm'] ) && $form_state['values']['confirm'] ) {
+    $today = date('Y-m-d');
+    $current_total = variable_get('current_total');
+    $money_nodes = node_load_multiple(array(), array('type' => 'money'));
+    $data = array();
+    foreach ($money_nodes as $money_node) {
+      if (strtotime($money_node->field_date['und'][0]['value']) < strtotime($today)) {
+        $data[] = array(
+          'nid' => $money_node->nid,
+          'amount' => $money_node->field_amount['und'][0]['amount'],
+        );
+      }
+    }
+    foreach ($data as $item) {
+      $current_total += $item['amount'];
+      $node = node_load($item['nid']);
+      $node->status = 0;
+      node_save($node);
+    }
+
+    drupal_set_message('You current total has been generated and saved!');
+  }
 }

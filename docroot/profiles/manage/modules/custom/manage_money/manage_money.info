@@ -22,6 +22,7 @@ features[field_instance][] = node-money-field_date
 features[field_instance][] = node-money-field_end_date
 features[field_instance][] = node-money-field_monthly
 features[node][] = money
+features[variable][] = date_format_month_year
 features[variable][] = field_bundle_settings_node__money
 features[variable][] = menu_options_money
 features[variable][] = menu_parent_money

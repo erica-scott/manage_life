@@ -299,3 +299,10 @@ function manage_update_7001() {
   );
   module_enable($module_list);
 }
+
+/**
+ * Enable core module.
+ */
+function manage_update_7002() {
+  module_enable(array('manage_core'));
+}

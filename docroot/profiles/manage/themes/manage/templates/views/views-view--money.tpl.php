@@ -51,6 +51,10 @@
     </div>
   <?php endif; ?>
 
+  <div class="current-total">
+    <h1>Current Total: <?php print '$' . variable_get('current_total'); ?></h1>
+  </div>
+
   <?php if ($rows): ?>
     <div class="view-content">
       <?php print $rows; ?>

@@ -74,38 +74,26 @@
  */
 ?>
 <header class="wrap header">
-	<div class="container wrap-inner">
-		<div class="row">
-      <div class="col-md-4">
-      	<div class="social-list">
-        	<ul>
-            <li><a href="<?php print theme_get_setting('facebook'); ?>" class="facebook">Facebook</a></li>
-            <li><a href="<?php print theme_get_setting('twitter'); ?>" class="twitter">Twitter</a></li>
-            <li><a href="<?php print theme_get_setting('pinterest'); ?>" class="pinterest">Pinterest</a></li>
+  <div class="container wrap-inner">
+    <div class="row">
+      <div class="col-xs-2">
+        <div class="social-list">
+          <ul>
+            <li><a href="https://www.facebook.com/" class="facebook">Facebook</a></li>
+            <li><a href="https://twitter.com" class="twitter">Twitter</a></li>
+            <li><a href="https://www.pinterest.com/" class="pinterest">Pinterest</a></li>
           </ul>
         </div>
       </div>
-      <div class="col-md-4">
-      	<div class="site-logo">
-        	<?php if (!empty($site_name)): ?>
-          <a class="logo" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>">
-          	<img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
-          </a>
-          <?php endif; ?>
-          <?php if (!empty($site_slogan)): ?>
-          	<h3 class="slogan"><?php print $site_slogan; ?></h3>
-          <?php endif; ?>
+
+      <div class="col-xs-8">
+        <div class="site-name">
+          <a href="/"><?php print $site_name; ?></a>
         </div>
       </div>
-      <div class="col-md-4">
-      	<div class="search-form">
-        	<?php print render($page['search_form']); ?>
-        </div><!--	/.search-form	!-->
-      </div>
     </div>
-	</div>
-</header><!--	/.header	!-->
-
+  </div>
+</header>
 <section class="wrap main">
   <div class="container wrap-inner">
 
@@ -114,14 +102,14 @@
     </div>
 
     <div class="row main-inner">
-    	<div class="main-table">
-      	<div class="main-row">
-		      <section class="col-md-9 main-content">
+      <div class="main-table">
+        <div class="main-row">
+          <section class="col-md-9 main-content">
             <div class="main-content-inner">
-            	<?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
+              <?php if (!empty($breadcrumb)): print $breadcrumb; endif;?>
               <a id="main-content"></a>
               <?php print render($title_prefix); ?>
-							<?php if (!empty($title)): ?>
+              <?php if (!empty($title)): ?>
                 <h1 class="page-header"><?php print $title; ?></h1>
               <?php endif; ?>
               <?php print render($title_suffix); ?>
@@ -130,7 +118,7 @@
                 <?php print render($tabs); ?>
               <?php endif; ?>
               <?php if (!empty($page['help'])): ?>
-								<?php print render($page['help']); ?>
+                <?php print render($page['help']); ?>
               <?php endif; ?>
               <?php if (!empty($action_links)): ?>
                 <ul class="action-links"><?php print render($action_links); ?></ul>
@@ -138,12 +126,12 @@
               <div class="region region-content">
                 <?php print render($page['content']); ?>
               </div>
-            </div><!--	/.main-content-inner	!-->
+            </div><!--  /.main-content-inner  !-->
           </section>
           <aside class="col-md-3 sidebar-right" role="complementary">
             <?php print render($page['sidebar_right']); ?>
           </aside>
-      	</div>
+        </div>
       </div>
       <div class="clr"></div>
 
@@ -168,11 +156,11 @@
             <?php print render($page['before_footer4']); ?>
           </div>
         </div>
-      </div><!--	/.before-footer	!-->
+      </div><!--  /.before-footer !-->
 
       <footer class="footer">
         <div class="col-md-6 copyright">
-					<?php print theme_get_setting('copyright'); ?>
+          <?php print theme_get_setting('copyright'); ?>
           <?php $credit = theme_get_setting('credit');
           if (!isset($credit) || (theme_get_setting('credit') != 1)):
           print t('Theme by <a href="@url" title="New looks for Drupal">cDrupal</a>', array('@url' => 'http://cdrupal.com/'));
@@ -183,6 +171,6 @@
         </div>
       </footer>
 
-    </div><!--	/.main-inner	!-->
+    </div><!--  /.main-inner  !-->
   </div>
 </section>
