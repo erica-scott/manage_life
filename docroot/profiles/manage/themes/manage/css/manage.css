@@ -68,3 +68,20 @@ header .site-name :hover {
   color: white;
   text-decoration: none;
 }
+
+/* line 3, ../sass/components/_grades.scss */
+.view-grades caption .date-display-single {
+  font-size: 25px;
+}
+/* line 9, ../sass/components/_grades.scss */
+.view-grades .admin-buttons a {
+  border: solid 1px;
+  padding: 5px 5px 5px 5px;
+  border-radius: 25px;
+}
+/* line 14, ../sass/components/_grades.scss */
+.view-grades .admin-buttons a:hover {
+  background-color: #337ab7;
+  color: white;
+  text-decoration: none;
+}

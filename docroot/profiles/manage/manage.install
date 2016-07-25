@@ -306,3 +306,10 @@ function manage_update_7001() {
 function manage_update_7002() {
   module_enable(array('manage_core'));
 }
+
+/**
+ * Enable custom modules.
+ */
+function manage_update_7003() {
+  module_enable(array('manage_money', 'manage_grades'));
+}

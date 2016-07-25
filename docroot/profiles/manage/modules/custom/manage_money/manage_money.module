@@ -56,8 +56,6 @@ function manage_money_node_presave($node) {
  * Implements hook_menu().
  */
 function manage_money_menu() {
-  module_load_include('inc', 'system', 'system.admin');
-
   $items['admin/config/manage/money'] = array(
     'title' => 'Money Config',
     'description' => 'Manage the configurations of the money module',

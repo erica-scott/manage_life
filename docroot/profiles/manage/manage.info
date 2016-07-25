@@ -12,3 +12,4 @@ dependencies[] = admin_menu
 dependencies[] = module_filter
 dependencies[] = manage_core
 dependencies[] = manage_money
+dependencies[] = manage_grades

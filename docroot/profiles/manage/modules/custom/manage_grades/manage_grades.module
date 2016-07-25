@@ -5,3 +5,103 @@
  */
 
 include_once 'manage_grades.features.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function manage_grades_menu() {
+  $items['admin/config/manage/grades'] = array(
+    'title' => 'Grades Config',
+    'description' => 'Manage the configurations of the grades module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('manage_grades_admin_form'),
+    'access arguments' => array('access administration pages'),
+  );
+
+  return $items;
+}
+
+/**
+ * Custom manage grades admin form.
+ */
+function manage_grades_admin_form($form, &$form_state) {
+  $form = array();
+
+  $form['generate'] = array(
+    '#type' => 'submit',
+    '#value' => 'Generate',
+  );
+
+  return $form;
+}
+
+/**
+ * Submit function for manage_grades_admin_form.
+ */
+function manage_grades_admin_form_submit($form, &$form_state) {
+  $grades = node_load_multiple(array(), array('type' => 'grades'));
+
+  $totals = array();
+  foreach ($grades as $grade) {
+    if (strpos($grade->title, 'Total') === FALSE) {
+      $data[$grade->field_semester_year['und'][0]['value']][] = array(
+        'percentage' => $grade->field_percentage['und'][0]['value'],
+        'credits' => $grade->field_credits['und'][0]['value'],
+      );
+    } else {
+      $totals[] = $grade;
+    }
+  }
+
+  foreach ($data as $date => $item) {
+    $data[$date]['total_credits'] = 0;
+    foreach ($item as $key => $val) {
+      $data[$date]['percentage'][] = $val['percentage'];
+      $data[$date]['total_credits'] += $val['credits'];
+      unset($data[$date][$key]);
+    }
+  }
+
+  foreach ($data as $date => $items) {
+    $title = date('F Y', strtotime($date)) . ' Total';
+    $average = 0;
+    foreach ($items['percentage'] as $percentage) {
+      $average += str_replace('%', '', $percentage);
+    }
+    $do_new_node = TRUE;
+    $average = $average / count($items['percentage']);
+    foreach ($totals as $total) {
+      if ($total->title == $title) {
+        $do_new_node = FALSE;
+      }
+    }
+    if ($do_new_node) {
+      $node = new stdClass();
+      $node->title = $title;
+      $node->type = 'grades';
+      $node->status = 1;
+      $node->uid = (isset($local_user->uid) && !empty($local_user->uid)?$local_user->uid:1);
+      $node->language = 'und';
+
+      $node->field_credits['und'][0]['value'] = number_format($items['total_credits'], 2);
+      $node->field_percentage['und'][0]['value'] = $average . '%';
+      $node->field_completed['und'][0]['value'] = 1;
+      $node->field_semester_year['und'][0] = array(
+        'value' => $date,
+        'timezone' => 'America/Vancouver',
+        'timezone_db' => 'America/Vancouver',
+        'date_type' => 'datetime',
+      );
+
+      $node = node_submit($node);
+      node_save($node);
+    }
+    else {
+      $total->field_credits['und'][0]['value'] = number_format($items['total_credits'], 2);
+      $total->field_percentage['und'][0]['value'] = $average . '%';
+      node_save($total);
+    }
+  }
+
+  drupal_set_message('The total grades nodes have been succesfully created!');
+}
