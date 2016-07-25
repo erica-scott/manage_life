@@ -28,4 +28,17 @@
       width: 25%;
     }
   }
+
+  .admin-buttons {
+    a {
+      border: solid 1px;
+      padding: 5px 5px 5px 5px;
+      border-radius: 25px;
+    }
+    a:hover {
+      background-color: #337ab7;
+      color: white;
+      text-decoration: none;
+    }
+  }
 }

@@ -139,6 +139,8 @@ function manage_money_admin_form_submit($form, &$form_state) {
       node_save($node);
     }
 
+    variable_set('current_total', $current_total);
+
     drupal_set_message('You current total has been generated and saved!');
   }
 }

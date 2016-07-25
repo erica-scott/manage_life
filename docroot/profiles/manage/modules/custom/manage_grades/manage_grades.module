@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Grades feature.
+ */
+
+include_once 'manage_grades.features.inc';

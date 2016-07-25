@@ -56,3 +56,15 @@ header .site-name :hover {
 .view-money table td.view-field-php {
   width: 25%;
 }
+/* line 33, ../sass/components/_money.scss */
+.view-money .admin-buttons a {
+  border: solid 1px;
+  padding: 5px 5px 5px 5px;
+  border-radius: 25px;
+}
+/* line 38, ../sass/components/_money.scss */
+.view-money .admin-buttons a:hover {
+  background-color: #337ab7;
+  color: white;
+  text-decoration: none;
+}

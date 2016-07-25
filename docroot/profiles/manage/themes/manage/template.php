@@ -88,3 +88,18 @@ function manage_preprocess_page(&$vars) {
   $menuhtml = drupal_render($menu);
   $vars['main_menu'] = $menuhtml;
 }
+
+/**
+ *
+ */
+function manage_preprocess_views_view(&$view) {
+  if ($view['view']->name == 'money') {
+    global $user;
+    $view['is_authenticated_user'] = FALSE;
+    foreach ($user->roles as $role) {
+      if ($role == 'authenticated user') {
+        $view['is_authenticated_user'] = TRUE;
+      }
+    }
+  }
+}
