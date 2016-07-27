@@ -17,4 +17,26 @@
       text-decoration: none;
     }
   }
+
+  table {
+    td.views-field-title {
+      width: 25%;
+    }
+
+    td.views-field-field-percentage {
+      width: 25%;
+    }
+
+    td.views-field-field-credits {
+      width: 25%;
+    }
+
+    td.view-field-php {
+      width: 25%;
+    }
+  }
+
+  .total-percentage {
+    font-size: 25px;
+  }
 }

@@ -101,5 +101,13 @@ function manage_preprocess_views_view(&$view) {
         $view['is_authenticated_user'] = TRUE;
       }
     }
+
+    if ($view['view']->name == 'grades') {
+      $view['percentage'] = variable_get($user->name . '_percentage_total', 0);
+    }
+
+    if ($view['view']->name == 'money') {
+      $view['current_total'] = variable_get($user->name . '_current_total', 0);
+    }
   }
 }

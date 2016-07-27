@@ -79,9 +79,9 @@
       <div class="col-xs-2">
         <div class="social-list">
           <ul>
-            <li><a href="https://www.facebook.com/" class="facebook">Facebook</a></li>
-            <li><a href="https://twitter.com" class="twitter">Twitter</a></li>
-            <li><a href="https://www.pinterest.com/" class="pinterest">Pinterest</a></li>
+            <li><a target="_blank" href="https://www.facebook.com/" class="facebook">Facebook</a></li>
+            <li><a target="_blank" href="https://twitter.com" class="twitter">Twitter</a></li>
+            <li><a target="_blank" href="https://www.pinterest.com/" class="pinterest">Pinterest</a></li>
           </ul>
         </div>
       </div>

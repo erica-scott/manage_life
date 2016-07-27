@@ -137,10 +137,15 @@ function manage_money_views_default_views() {
   $handler->display->display_options['fields']['php']['field'] = 'php';
   $handler->display->display_options['fields']['php']['label'] = 'Total';
   $handler->display->display_options['fields']['php']['use_php_setup'] = 1;
-  $handler->display->display_options['fields']['php']['php_setup'] = '$static = variable_get(\'current_total\');';
+  $handler->display->display_options['fields']['php']['php_setup'] = 'global $user; $static = variable_get($user->name . \'_current_total\');';
   $handler->display->display_options['fields']['php']['php_output'] = '<?php $static = $static + $data->field_field_amount[0][\'raw\'][\'amount\']; print \'$\' . number_format($static, 2); ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  /* Field: Content: Author uid */
+  $handler->display->display_options['fields']['uid']['id'] = 'uid';
+  $handler->display->display_options['fields']['uid']['table'] = 'node';
+  $handler->display->display_options['fields']['uid']['field'] = 'uid';
+  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
   /* Sort criterion: Content: Date (field_date) */
   $handler->display->display_options['sorts']['field_date_value']['id'] = 'field_date_value';
   $handler->display->display_options['sorts']['field_date_value']['table'] = 'field_data_field_date';
@@ -159,10 +164,21 @@ function manage_money_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'money' => 'money',
   );
+  /* Filter criterion: Global: PHP */
+  $handler->display->display_options['filters']['php']['id'] = 'php';
+  $handler->display->display_options['filters']['php']['table'] = 'views';
+  $handler->display->display_options['filters']['php']['field'] = 'php';
+  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php']['php_filter'] = 'global $user; if ($row->uid != $user->uid) { return TRUE; }';
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page_1');
   $handler->display->display_options['path'] = 'money';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Money';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['money'] = $view;
 
   return $export;

@@ -53,7 +53,7 @@
 
   <?php if ($is_authenticated_user): ?>
     <div class="admin-buttons">
-      <a href="/admin/config/manage/grades">Configuration</a>
+      <a href="admin/config/manage_admin/grades_config">Configuration</a>
       <a href="/node/add/grades">Add Item</a>
     </div>
   <?php endif; ?>
@@ -67,6 +67,12 @@
       <?php print $empty; ?>
     </div>
   <?php endif; ?>
+
+  <div class="total-percentage">
+    <?php if ($percentage): ?>
+      <?php print 'Average: ' . $percentage . '%'; ?>
+    <?php endif; ?>
+  </div>
 
   <?php if ($pager): ?>
     <?php print $pager; ?>

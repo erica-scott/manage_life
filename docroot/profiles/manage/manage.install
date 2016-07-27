@@ -311,5 +311,5 @@ function manage_update_7002() {
  * Enable custom modules.
  */
 function manage_update_7003() {
-  module_enable(array('manage_money', 'manage_grades'));
+  module_enable(array('manage_money', 'manage_grades', 'manage_admin'));
 }

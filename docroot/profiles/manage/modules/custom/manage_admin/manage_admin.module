@@ -1,0 +1,254 @@
+<?php
+/**
+ * @file
+ * Code for the Admin feature.
+ */
+
+include_once 'manage_admin.features.inc';
+
+/**
+ * Implements hook_permission.
+ */
+function manage_admin_permission() {
+  return array(
+    'access manage administration' => array(
+      'title' => t('Access Manage Administration'),
+      'description' => t('Access the custom manage administration menu'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu.
+ */
+function manage_admin_menu() {
+  $items = array();
+
+  $items['admin/config/manage_admin'] = array(
+    'title' => 'Manage Administration',
+    'description' => 'The administration menu for authenticed users.',
+    'position' => 'left',
+    'weight' => -20,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access manage administration'),
+    'file' => '../../../../../modules/system/system.admin.inc',
+  );
+
+  $items['admin/config/manage_admin/grades_config'] = array(
+    'title' => 'Grades Config',
+    'description' => 'Configuration settings for the grades module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('manage_admin_grades_config_form'),
+    'access arguments' => array('access manage administration'),
+  );
+
+  $items['admin/config/manage_admin/money_config'] = array(
+    'title' => 'Money Config',
+    'description' => 'Configuration settings for the money module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('manage_admin_money_config_form'),
+    'access arguments' => array('access manage administration'),
+  );
+
+  return $items;
+}
+
+/**
+ * Custom manage grades admin form.
+ */
+function manage_admin_grades_config_form($form, &$form_state) {
+  $form = array();
+
+  $form['return'] = array(
+    '#type' => 'markup',
+    '#markup' => '<a href="/grades">Return to Page</a><br><br>'
+  );
+
+  $form['generate'] = array(
+    '#type' => 'submit',
+    '#value' => 'Generate',
+  );
+
+  $form['description'] = array(
+    '#type' => 'markup',
+    '#markup' => 'This will generate all of the semester totals as well as the total overall average.',
+  );
+
+  return $form;
+}
+
+
+/**
+ * Submit function for manage_admin_grades_config_form.
+ */
+function manage_admin_grades_config_form_submit($form, &$form_state) {
+  global $user;
+  $grades = node_load_multiple(array(), array('type' => 'grades'));
+
+  $totals = array();
+  $total_percentage = 0;
+  $count_percentage = 0;
+  foreach ($grades as $grade) {
+    if (strpos($grade->title, 'Total') === FALSE) {
+      $data[$grade->field_semester_year['und'][0]['value']][] = array(
+        'percentage' => $grade->field_percentage['und'][0]['value'],
+        'credits' => $grade->field_credits['und'][0]['value'],
+      );
+      if ($grade->field_completed['und'][0]['value'] == 1) {
+        $total_percentage += $grade->field_percentage['und'][0]['value'];
+        $count_percentage++;
+      }
+    } else {
+      $totals[] = $grade;
+    }
+  }
+
+  $total_percentage = number_format($total_percentage / $count_percentage, 2);
+  variable_set($user->name . '_percentage_total', $total_percentage);
+
+  foreach ($data as $date => $item) {
+    $data[$date]['total_credits'] = 0;
+    foreach ($item as $key => $val) {
+      $data[$date]['percentage'][] = $val['percentage'];
+      $data[$date]['total_credits'] += $val['credits'];
+      unset($data[$date][$key]);
+    }
+  }
+
+  foreach ($data as $date => $items) {
+    $title = date('F Y', strtotime($date)) . ' Total';
+    $average = 0;
+    foreach ($items['percentage'] as $percentage) {
+      $average += str_replace('%', '', $percentage);
+    }
+    $do_new_node = TRUE;
+    $average = $average / count($items['percentage']);
+    foreach ($totals as $total) {
+      if ($total->title == $title) {
+        $do_new_node = FALSE;
+      }
+    }
+    if ($do_new_node) {
+      $node = new stdClass();
+      $node->title = $title;
+      $node->type = 'grades';
+      $node->status = 1;
+      $node->uid = (isset($local_user->uid) && !empty($local_user->uid)?$local_user->uid:1);
+      $node->language = 'und';
+
+      $node->field_credits['und'][0]['value'] = number_format($items['total_credits'], 2);
+      $node->field_percentage['und'][0]['value'] = $average . '%';
+      $node->field_completed['und'][0]['value'] = 1;
+      $node->field_semester_year['und'][0] = array(
+        'value' => $date,
+        'timezone' => 'America/Vancouver',
+        'timezone_db' => 'America/Vancouver',
+        'date_type' => 'datetime',
+      );
+
+      $node = node_submit($node);
+      node_save($node);
+    }
+    else {
+      $total->field_credits['und'][0]['value'] = number_format($items['total_credits'], 2);
+      $total->field_percentage['und'][0]['value'] = $average . '%';
+      node_save($total);
+    }
+  }
+
+  drupal_set_message('The total grades nodes have been succesfully created!');
+}
+
+/**
+ * Custom manage money admin form.
+ */
+function manage_admin_money_config_form($form, &$form_state) {
+  if ( isset( $form_state['storage'] ) && $form_state['storage']['ask_confirm'] ) {
+    $question = t( "Confirm Generate" );
+    $path = 'admin/config/manage/money';
+    $description = t( "Are you sure you want to do this? This will set all money content up until today to unpublished and update your current total by adding up the amounts from all of this content. This cannot be undone." );
+    $yes = t( "Confirm" );
+    $no = t( "Cancel" );
+    return confirm_form($form, $question, $path, $description, $yes, $no);
+  }
+  else {
+    $form = array();
+
+    global $user;
+
+    $current_total = variable_get($user->name . '_current_total');
+
+    $form['return'] = array(
+      '#type' => 'markup',
+      '#markup' => '<a href="/money">Return to Page</a><br><br>'
+    );
+
+    $form['current_total'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Current Total',
+      '#default_value' => $current_total,
+    );
+
+    $form['save'] = array(
+      '#type' => 'submit',
+      '#value' => 'Save',
+    );
+
+    $form['save_description'] = array(
+      '#type' => 'markup',
+      '#markup' => 'This button will set the current total to whatever value is entered above.<br>',
+    );
+
+    $form['generate'] = array(
+      '#type' => 'submit',
+      '#value' => 'Generate',
+    );
+
+    $form['generate_description'] = array(
+      '#type' => 'markup',
+      '#markup' => 'This button will set all money content up until today to unpublished and update your current total by adding up the amounts from all of this content.',
+    );
+
+    return $form;
+  }
+}
+
+/**
+ * Submit function for manage_admin_money_config_form save.
+ */
+function manage_admin_money_config_form_submit($form, &$form_state) {
+  global $user;
+  if ($form_state['clicked_button']['#value'] == 'Save') {
+    $current_total = $form_state['values']['current_total'];
+    variable_set($user->name . '_current_total', $current_total);
+    drupal_set_message('You current total has been saved!');
+  }
+  else if ($form_state['clicked_button']['#value'] == 'Generate') {
+    $form_state['rebuild'] = TRUE;
+    $form_state['storage']['ask_confirm'] = TRUE;
+  }
+  else if (isset( $form_state['values']['confirm'] ) && $form_state['values']['confirm'] ) {
+    $today = date('Y-m-d');
+    $current_total = variable_get('current_total');
+    $money_nodes = node_load_multiple(array(), array('type' => 'money'));
+    $data = array();
+    foreach ($money_nodes as $money_node) {
+      if (strtotime($money_node->field_date['und'][0]['value']) < strtotime($today)) {
+        $data[] = array(
+          'nid' => $money_node->nid,
+          'amount' => $money_node->field_amount['und'][0]['amount'],
+        );
+      }
+    }
+    foreach ($data as $item) {
+      $current_total += $item['amount'];
+      $node = node_load($item['nid']);
+      $node->status = 0;
+      node_save($node);
+    }
+
+    variable_set($user->name . '_current_total', $current_total);
+
+    drupal_set_message('You current total has been generated and saved!');
+  }
+}

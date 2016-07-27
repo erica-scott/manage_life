@@ -41,7 +41,7 @@ header .site-name :hover {
   font-size: 25px;
 }
 /* line 15, ../sass/components/_money.scss */
-.view-money table td.views-field views-field-title {
+.view-money table td.views-field-title {
   width: 25%;
 }
 /* line 19, ../sass/components/_money.scss */
@@ -84,4 +84,52 @@ header .site-name :hover {
   background-color: #337ab7;
   color: white;
   text-decoration: none;
+}
+/* line 22, ../sass/components/_grades.scss */
+.view-grades table td.views-field-title {
+  width: 25%;
+}
+/* line 26, ../sass/components/_grades.scss */
+.view-grades table td.views-field-field-percentage {
+  width: 25%;
+}
+/* line 30, ../sass/components/_grades.scss */
+.view-grades table td.views-field-field-credits {
+  width: 25%;
+}
+/* line 34, ../sass/components/_grades.scss */
+.view-grades table td.view-field-php {
+  width: 25%;
+}
+/* line 39, ../sass/components/_grades.scss */
+.view-grades .total-percentage {
+  font-size: 25px;
+}
+
+/* line 1, ../sass/components/_edit_add_content.scss */
+#edit-add-content {
+  background-color: #d9d9d9;
+  color: black;
+  border: solid #d9d9d9 thin;
+  background-image: url("../images/down-arrow.png");
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+  background-position: 5px 10px;
+}
+/* line 10, ../sass/components/_edit_add_content.scss */
+#edit-add-content p {
+  padding-left: 40px;
+  font-size: 20px;
+  margin-top: 10px;
+}
+/* line 16, ../sass/components/_edit_add_content.scss */
+#edit-add-content #add-content-list {
+  background-color: white;
+  display: none;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+/* line 22, ../sass/components/_edit_add_content.scss */
+#edit-add-content #add-content-list a {
+  padding-left: 5px;
 }

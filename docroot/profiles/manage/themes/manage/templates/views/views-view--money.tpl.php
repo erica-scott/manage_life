@@ -53,13 +53,13 @@
 
   <?php if ($is_authenticated_user): ?>
     <div class="admin-buttons">
-      <a href="/admin/config/manage/money">Configuration</a>
+      <a href="/admin/config/manage_admin/money_config">Configuration</a>
       <a href="/node/add/money">Add Item</a>
     </div>
   <?php endif; ?>
 
   <div class="current-total">
-    <h1>Current Total: <?php print '$' . variable_get('current_total'); ?></h1>
+    <h1>Current Total: <?php print '$' . $current_total; ?></h1>
   </div>
 
   <?php if ($rows): ?>
