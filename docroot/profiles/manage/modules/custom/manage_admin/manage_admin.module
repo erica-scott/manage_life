@@ -50,6 +50,12 @@ function manage_admin_menu() {
     'access arguments' => array('access manage administration'),
   );
 
+  $items['admin/config/manage_admin/edit_add_content'] = array(
+    'title' => 'Edit & Add Content',
+    'description' => 'Custom portal for the user to view, add and edit their content',
+    'access arguments' => array('access manage administration'),
+  );
+
   return $items;
 }
 

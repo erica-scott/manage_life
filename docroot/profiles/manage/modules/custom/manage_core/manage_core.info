@@ -17,6 +17,7 @@ features[variable][] = site_frontpage
 features[variable][] = site_mail
 features[variable][] = site_name
 features[variable][] = site_slogan
+features[variable][] = user_email_verification
 features_exclude[dependencies][ctools] = ctools
 features_exclude[dependencies][features] = features
 features_exclude[dependencies][menu] = menu

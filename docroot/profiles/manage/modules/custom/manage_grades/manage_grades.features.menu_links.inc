@@ -17,17 +17,14 @@ function manage_grades_menu_default_menu_links() {
     'router_path' => 'grades',
     'link_title' => 'Grades',
     'options' => array(
-      'attributes' => array(
-        'title' => '',
-      ),
       'identifier' => 'main-menu_grades:grades',
     ),
-    'module' => 'menu',
+    'module' => 'system',
     'hidden' => 0,
     'external' => 0,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => 0,
+    'weight' => -50,
     'customized' => 1,
   );
 
