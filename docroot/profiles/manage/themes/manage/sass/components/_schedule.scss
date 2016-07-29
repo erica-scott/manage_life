@@ -1,0 +1,28 @@
+.view-calendar {
+  .admin-buttons {
+    a {
+      border: solid 1px;
+      padding: 5px 5px 5px 5px;
+      border-radius: 25px;
+    }
+    a:hover {
+      background-color: #337ab7;
+      color: white;
+      text-decoration: none;
+    }
+  }
+
+  .date-prev {
+    position: absolute !important;
+    left: 0 !important;
+    background: none repeat scroll 0 0 #fff !important;
+    a {
+      position: absolute;
+      left: 0;
+    }
+  }
+
+  .date-next {
+    background: none repeat scroll 0 0 #fff !important;
+  }
+}

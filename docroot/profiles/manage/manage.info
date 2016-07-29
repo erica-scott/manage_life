@@ -10,7 +10,13 @@ dependencies[] = ctools
 dependencies[] = bean
 dependencies[] = admin_menu
 dependencies[] = module_filter
+dependencies[] = taxonomy
+dependencies[] = calendar
+dependencies[] = event_calendar
+
+; Custom
 dependencies[] = manage_core
 dependencies[] = manage_money
 dependencies[] = manage_grades
 dependencies[] = manage_admin
+dependencies[] = manage_schedule

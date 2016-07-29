@@ -133,3 +133,31 @@ header .site-name :hover {
 #edit-add-content #add-content-list a {
   padding-left: 5px;
 }
+
+/* line 3, ../sass/components/_schedule.scss */
+.view-calendar .admin-buttons a {
+  border: solid 1px;
+  padding: 5px 5px 5px 5px;
+  border-radius: 25px;
+}
+/* line 8, ../sass/components/_schedule.scss */
+.view-calendar .admin-buttons a:hover {
+  background-color: #337ab7;
+  color: white;
+  text-decoration: none;
+}
+/* line 15, ../sass/components/_schedule.scss */
+.view-calendar .date-prev {
+  position: absolute !important;
+  left: 0 !important;
+  background: none repeat scroll 0 0 #fff !important;
+}
+/* line 19, ../sass/components/_schedule.scss */
+.view-calendar .date-prev a {
+  position: absolute;
+  left: 0;
+}
+/* line 25, ../sass/components/_schedule.scss */
+.view-calendar .date-next {
+  background: none repeat scroll 0 0 #fff !important;
+}

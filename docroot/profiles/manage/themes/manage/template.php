@@ -93,7 +93,7 @@ function manage_preprocess_page(&$vars) {
  * Implements hook_preprocess_views_view.
  */
 function manage_preprocess_views_view(&$view) {
-  if ($view['view']->name == 'money' || $view['view']->name == 'grades') {
+  if ($view['view']->name == 'money' || $view['view']->name == 'grades' || $view['view']->name == 'calendar') {
     global $user;
     $view['is_authenticated_user'] = FALSE;
     foreach ($user->roles as $role) {

@@ -239,7 +239,7 @@ function manage_admin_money_config_form_submit($form, &$form_state) {
     $money_nodes = node_load_multiple(array(), array('type' => 'money'));
     $data = array();
     foreach ($money_nodes as $money_node) {
-      if (strtotime($money_node->field_date['und'][0]['value']) < strtotime($today)) {
+      if (strtotime($money_node->field_date['und'][0]['value']) < strtotime($today) && $money_node->status == 1) {
         $data[] = array(
           'nid' => $money_node->nid,
           'amount' => $money_node->field_amount['und'][0]['amount'],
