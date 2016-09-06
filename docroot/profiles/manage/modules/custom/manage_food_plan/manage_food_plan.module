@@ -1,0 +1,48 @@
+<?php
+/**
+ * @file
+ * Code for the Food Plan feature.
+ */
+
+include_once 'manage_food_plan.features.inc';
+
+/**
+ * Implements hook_node_presave.
+ */
+function manage_food_plan_node_presave($node) {
+  if ($node->type == 'food_plan') {
+    foreach ($node->field_food[LANGUAGE_NONE] as $key => $field) {
+      $actual_calories = intval($field['field_actual_amount'][LANGUAGE_NONE][0]['value']);
+      $actual_calories = $actual_calories * intval($field['field_food_item'][LANGUAGE_NONE][0]['field_calories'][LANGUAGE_NONE][0]['value']);
+      $node->field_food[LANGUAGE_NONE][$key]['entity']->field_actual_calories[LANGUAGE_NONE][0]['value'] = $actual_calories;
+    }
+  }
+}
+
+/**
+ * Implements hook_menu.
+ */
+function manage_food_plan_menu() {
+  $items['food-plan/get_term'] = array(
+    'page callback' => 'manage_food_plan_get_term_ajax',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+/**
+ * Callback to return JSON encoded image for given nid.
+ */
+function manage_food_plan_get_term_ajax($tid) {
+  $term = taxonomy_term_load($tid);
+  $serving_size = $term->field_amount_food[LANGUAGE_NONE][0]['value'];
+  drupal_json_output($serving_size);
+}
+
+/**
+ * Implements hook_preprocess_node.
+ */
+function manage_food_plan_preprocess_node(&$vars) {
+  //dpm($vars);
+}
